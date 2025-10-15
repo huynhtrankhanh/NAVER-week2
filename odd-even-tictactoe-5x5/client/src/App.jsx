@@ -27,10 +27,27 @@ function useLocalStorage(key, initialValue) {
   return [value, setValue];
 }
 
+// Modified useLocalStorage to accept URL param priority
+function useLocalStorageWithUrlOverride(key, urlValue, fallback) {
+  // Prioritize URL param over localStorage
+  const initialValue = urlValue || (() => {
+    const raw = localStorage.getItem(key);
+    return raw != null ? JSON.parse(raw) : fallback;
+  })();
+  
+  const [value, setValue] = useState(initialValue);
+  
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [key, value]);
+  
+  return [value, setValue];
+}
+
 export default function App() {
   const qs = useQuery();
-  const [room, setRoom] = useLocalStorage('oe.room', qs.get('room') || 'lobby');
-  const [name, setName] = useLocalStorage('oe.name', qs.get('name') || '');
+  const [room, setRoom] = useLocalStorageWithUrlOverride('oe.room', qs.get('room'), 'lobby');
+  const [name, setName] = useLocalStorageWithUrlOverride('oe.name', qs.get('name'), '');
 
   const [connected, setConnected] = useState(false);
   const [connecting, setConnecting] = useState(false);
