@@ -1,0 +1,61 @@
+name: Build Single-Serve JS
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'odd-even-tictactoe-5x5/**'
+      - '!odd-even-tictactoe-5x5/single-serve.js'
+  pull_request:
+    paths:
+      - 'odd-even-tictactoe-5x5/**'
+      - '!odd-even-tictactoe-5x5/single-serve.js'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'odd-even-tictactoe-5x5/package-lock.json'
+      
+      - name: Install root dependencies
+        working-directory: odd-even-tictactoe-5x5
+        run: npm ci
+      
+      - name: Install server and client dependencies
+        working-directory: odd-even-tictactoe-5x5
+        run: npm run install-all
+      
+      - name: Build single-serve JS file
+        working-directory: odd-even-tictactoe-5x5
+        run: npm run build-single-serve
+      
+      - name: Upload single-serve artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: single-serve-js
+          path: odd-even-tictactoe-5x5/single-serve.js
+          retention-days: 90
+      
+      - name: Display artifact info
+        working-directory: odd-even-tictactoe-5x5
+        run: |
+          echo "✅ Single-serve JS file created successfully!"
+          echo "📦 File size: $(du -h single-serve.js | cut -f1)"
+          echo "📊 Line count: $(wc -l < single-serve.js)"
+          echo ""
+          echo "To use this file:"
+          echo "1. Download the artifact from this workflow run"
+          echo "2. Run with just Node.js: node single-serve.js"
+          echo ""
+          echo "No npm install required!"
