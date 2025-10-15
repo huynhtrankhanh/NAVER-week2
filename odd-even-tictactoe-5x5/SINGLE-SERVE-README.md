@@ -4,11 +4,12 @@ This directory contains a bundling script that creates a single JavaScript file 
 
 ## What is the Single-Serve JS File?
 
-The `single-serve.js` file is a standalone server file that:
+The `single-serve.js` file is a completely standalone server file that:
 - Contains all the server logic
 - Has the built frontend assets (HTML, CSS, JS) embedded as base64-encoded strings
+- Includes all npm dependencies (Express, WebSocket) bundled into the file
 - Serves both the frontend and backend from a single Node.js process
-- Requires only `express` and `ws` npm packages as external dependencies
+- **Requires only Node.js to run - no npm packages needed!**
 
 ## How to Build
 
@@ -20,7 +21,7 @@ This will:
 1. Build the client application using Vite
 2. Read the built HTML, CSS, and JS files
 3. Embed them into the server code
-4. Bundle everything using esbuild
+4. Bundle everything including all dependencies using esbuild
 5. Create `single-serve.js` in this directory
 
 ## How to Use
@@ -28,10 +29,7 @@ This will:
 After building:
 
 ```bash
-# Install required dependencies
-npm install express@^4.19.2 ws@^8.18.0
-
-# Run the single-serve file
+# Run with just Node.js - no dependencies needed!
 node single-serve.js
 
 # Or with custom port
@@ -50,17 +48,17 @@ The GitHub Action workflow `.github/workflows/build-single-serve.yml` automatica
 
 1. **Client Build**: Vite builds the React application into optimized HTML, CSS, and JS files
 2. **Asset Embedding**: The built files are base64-encoded and embedded into the server code
-3. **Server Bundling**: esbuild bundles the server code with embedded assets
+3. **Server Bundling**: esbuild bundles the server code with embedded assets AND all npm dependencies
 4. **Output**: A single executable JavaScript file is created
 
 ### Dependencies
 
-The single-serve file depends on:
+The single-serve file bundles everything:
 - Node.js built-in modules (http, path, url, fs, etc.)
-- `express@^4.19.2` - Web framework
-- `ws@^8.18.0` - WebSocket library
+- `express@^4.19.2` - Web framework (bundled)
+- `ws@^8.18.0` - WebSocket library (bundled)
 
-These dependencies must be installed via npm for the single-serve file to run.
+**No npm packages need to be installed to run the file!**
 
 ### File Structure
 
@@ -74,5 +72,5 @@ single-serve.js        - Generated single-serve file (not committed to git)
 
 - The `single-serve.js` file is not committed to version control (it's in `.gitignore`)
 - The file is regenerated on each build to include the latest changes
-- The bundle size is approximately 220KB
-- The file includes the complete application and can be distributed standalone (with the npm dependencies)
+- The bundle size is approximately 1.5MB (includes all dependencies)
+- The file includes the complete application and can be distributed standalone with just Node.js

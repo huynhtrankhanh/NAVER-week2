@@ -66,15 +66,17 @@ async function build() {
       bundle: true,
       platform: 'node',
       target: 'node18',
-      format: 'esm',
+      format: 'cjs',
       outfile: path.join(__dirname, 'single-serve.js'),
       banner: {
         js: '#!/usr/bin/env node\n'
       },
-      // Keep Node.js built-ins as external
-      packages: 'external',
+      // Bundle everything except Node.js built-ins
+      external: [],
       minify: false,
-      sourcemap: false
+      sourcemap: false,
+      mainFields: ['main', 'module'],
+      treeShaking: true
     });
   } catch (err) {
     console.error('❌ Bundling failed:', err);

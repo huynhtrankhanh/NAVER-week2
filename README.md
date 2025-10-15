@@ -118,7 +118,7 @@ npm run dev
 
 ## Single-Serve JS File
 
-This project includes a build system that creates a single JavaScript file containing both the frontend and backend. This file can be distributed and run standalone (with minimal npm dependencies).
+This project includes a build system that creates a single JavaScript file containing both the frontend and backend. This file can be distributed and run standalone with just Node.js - **no npm packages required!**
 
 ### Building the Single-Serve File
 
@@ -127,15 +127,12 @@ cd odd-even-tictactoe-5x5
 npm run build-single-serve
 ```
 
-This creates `single-serve.js` (~220KB) with all the application code embedded.
+This creates `single-serve.js` (~1.5MB) with all the application code and dependencies bundled.
 
 ### Running the Single-Serve File
 
 ```bash
-# Install required dependencies
-npm install express@^4.19.2 ws@^8.18.0
-
-# Run the application
+# Run with just Node.js - no npm install needed!
 node single-serve.js
 
 # Or with custom port

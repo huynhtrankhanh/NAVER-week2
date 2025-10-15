@@ -8,15 +8,13 @@
 2. Click on the latest successful workflow run
 3. Download the `single-serve-js` artifact
 4. Extract `single-serve.js` from the zip file
-5. Install dependencies:
-   ```bash
-   npm install express@^4.19.2 ws@^8.18.0
-   ```
-6. Run the server:
+5. Run the server with just Node.js:
    ```bash
    node single-serve.js
    ```
-7. Open `http://localhost:3001` in your browser
+6. Open `http://localhost:3001` in your browser
+
+**No npm install required! Just Node.js.**
 
 ### Option 2: Build It Yourself
 
@@ -26,7 +24,7 @@
    cd NAVER-week2/odd-even-tictactoe-5x5
    ```
 
-2. Install all dependencies:
+2. Install build dependencies:
    ```bash
    npm install
    npm run install-all
@@ -37,7 +35,7 @@
    npm run build-single-serve
    ```
 
-4. Run it:
+4. Run it (no additional dependencies needed):
    ```bash
    node single-serve.js
    ```
@@ -83,17 +81,11 @@ curl http://localhost:3001/health  # Should return {"ok":true}
 
 ## Troubleshooting
 
-### "Cannot find module 'express'"
-Install dependencies: `npm install express@^4.19.2 ws@^8.18.0`
-
 ### "Port already in use"
 Set a different port: `PORT=8080 node single-serve.js`
 
-### "Error: Dynamic require of ... is not supported"
-This means esbuild bundled something incorrectly. Check that you're using the correct versions of express (4.x) and ws (8.x).
-
 ### Large bundle size
-The bundle should be around 220KB. If it's much larger (>2MB), check that esbuild is using `packages: 'external'` to keep npm packages external.
+The bundle is approximately 1.5MB because it includes all dependencies (Express, WebSocket libraries, etc.) so that no npm packages need to be installed at runtime.
 
 ## GitHub Action Details
 
@@ -109,8 +101,8 @@ It produces an artifact named `single-serve-js` that's retained for 90 days.
 The `single-serve.js` file contains:
 - All server logic (Express routes, WebSocket handlers, game logic)
 - Embedded frontend assets (HTML, CSS, JS) as base64 strings
-- Bundled npm package code (not for express/ws, they remain external)
-- ~220KB of code in a single executable JavaScript file
+- Bundled Express and WebSocket library code
+- ~1.5MB of code in a single executable JavaScript file
 
 When run, it:
 1. Decodes the base64 assets back to strings
@@ -119,4 +111,4 @@ When run, it:
 4. Handles WebSocket connections at `/ws`
 5. Provides a health check at `/health`
 
-Everything a user needs to run the game is in one file!
+Everything a user needs to run the game is in one file - just add Node.js!

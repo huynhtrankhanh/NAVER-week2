@@ -1,8 +1,8 @@
-import http from 'http';
-import path from 'path';
-import url from 'url';
-import express from 'express';
-import { WebSocketServer } from 'ws';
+const http = require('http');
+const path = require('path');
+const url = require('url');
+const express = require('express');
+const { WebSocketServer } = require('ws');
 
 // Embedded static files - these will be replaced during build (base64 encoded)
 const INDEX_HTML = Buffer.from('__INDEX_HTML_BASE64__', 'base64').toString('utf-8');

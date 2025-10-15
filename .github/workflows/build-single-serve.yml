@@ -56,5 +56,6 @@ jobs:
           echo ""
           echo "To use this file:"
           echo "1. Download the artifact from this workflow run"
-          echo "2. Install dependencies: npm install express@^4.19.2 ws@^8.18.0"
-          echo "3. Run: node single-serve.js"
+          echo "2. Run with just Node.js: node single-serve.js"
+          echo ""
+          echo "No npm install required!"
