@@ -82,7 +82,6 @@ async function build() {
     console.error('❌ Bundling failed:', err);
     throw err;
   } finally {
-    // Clean up temp file
     if (fs.existsSync(tempEntryPath)) {
       fs.unlinkSync(tempEntryPath);
     }
