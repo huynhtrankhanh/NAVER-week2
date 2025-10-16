@@ -47,6 +47,7 @@ cd NAVER-week2/odd-even-tictactoe-5x5
 Install dependencies for both the server and client:
 
 ```bash
+npm install
 npm run install-all
 ```
 
